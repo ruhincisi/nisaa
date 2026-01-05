@@ -32,9 +32,26 @@ body{
 .bg .photo{
   position:absolute; inset:-2%;
   background:center/cover no-repeat;
-  filter: blur(10px) brightness(.55) saturate(1.25);
+  filter: blur(10px) brightness(.58) saturate(1.35);
   transform: scale(1.08);
 }
+
+/* ekstra canlı katman (bozmadan ek) */
+.bg .live{
+  position:absolute; inset:-45%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,110,180,.55), transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(120,170,255,.55), transparent 50%),
+    radial-gradient(circle at 45% 90%, rgba(255,220,120,.35), transparent 55%);
+  filter: blur(18px);
+  opacity:.75;
+  animation: drift2 12s ease-in-out infinite alternate;
+}
+@keyframes drift2{
+  0%{transform:translate(-2%,-1%) rotate(0deg) scale(1.05);}
+  100%{transform:translate(2%,1%) rotate(10deg) scale(1.18);}
+}
+
 .bg .grad{
   position:absolute; inset:-50%;
   background: radial-gradient(circle at 20% 20%, rgba(255,110,180,.55), transparent 45%),
@@ -195,7 +212,7 @@ h2{
 }
 .frame .img{
   position:absolute; inset:0;
-  background:center/contain no-repeat; /* <- kırpmadan sığdırır */
+  background:center/contain no-repeat;
 }
 .frame::after{
   content:"";
@@ -319,50 +336,25 @@ footer{
   to{transform:translateY(115vh) rotate(720deg); opacity:0;}
 }
 
-/* ======= MUSIC CONTROL (Floating) ======= */
-.musicCtrl{
-  position:fixed;
-  z-index:3;
-  right:14px;
-  bottom:14px;
-  display:flex;
-  gap:10px;
-  align-items:center;
-  padding:10px 12px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.20);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 18px 50px rgba(0,0,0,.45);
-  user-select:none;
-}
-.musicCtrl .dot{
-  width:9px;height:9px;border-radius:50%;
-  background: rgba(255,255,255,.85);
-  box-shadow: 0 0 14px rgba(255,255,255,.45);
-  animation: dot 1s ease-in-out infinite alternate;
-}
-@keyframes dot{
-  from{opacity:.35; transform:scale(.9);}
-  to{opacity:1; transform:scale(1.15);}
-}
-.musicCtrl button{
-  padding:10px 14px;
-  border-radius:999px;
-  font-size:.95rem;
-  box-shadow:none;
-}
-
 /* ======= MOBILE TUNING ======= */
 @media (max-width:520px){
   .ring{display:none;}
-  .bg .photo{filter: blur(8px) brightness(.58) saturate(1.2);}
-  .card{padding: 34px 18px 26px; border-radius: 28px;}
+  .bg .photo{filter: blur(8px) brightness(.62) saturate(1.25);}
+  .wrap{padding:10px 0;}
+  .card{
+    padding: 26px 16px 20px;
+    border-radius: 26px;
+
+    /* EKRANA SIĞSIN */
+    max-height: 92vh;
+    overflow:auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .hero{margin: 10px 0 14px;}
   .badge{font-size:.88rem; padding:9px 13px;}
   .actions{gap:10px;}
   button{width:100%;}
   .small{width:100%;}
-  .musicCtrl{right:10px; bottom:10px;}
 }
 </style>
 </head>
@@ -371,6 +363,7 @@ footer{
 
 <div class="bg">
   <div class="photo" id="bgPhoto"></div>
+  <div class="live"></div>
   <div class="grad"></div>
   <div class="ring r1"></div>
   <div class="ring r2"></div>
@@ -419,65 +412,64 @@ footer{
   </div>
 </div>
 
-<!-- ✅ LOCAL MUSIC (indirdiğin dosya) -->
-<audio id="bgm" preload="auto" loop>
-  <!-- dosya adın farklıysa burada değiştir -->
-  <source src="From The Start.mp3" type="audio/mpeg">
+<!-- ✅ LOCAL MUSIC (KONTROL YOK) -->
+<audio id="bgm" preload="auto" autoplay muted loop>
+  <source src="gitme-turnam-128-ytshorts.savetube.me.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Floating Music Control -->
-<div class="musicCtrl">
-  <div class="dot"></div>
-  <button id="musicBtn" onclick="toggleMusic()">▶️ Müziği Başlat</button>
-  <button class="small" id="volBtn" onclick="toggleVolume()">🔊 Ses: Orta</button>
-</div>
-
 <script>
-/* === AYARLAR ===
-   Foto adı sende nisa.jpeg görünüyor, jpg ise "nisa.jpg" yap.
-*/
-const PHOTO = "nisa.jpeg";     // <-- gerekirse nisa.jpg yap
-const MUSIC_FILE = "From The Start.mp3"; // <-- dosya adın farklıysa değiştir
-
+/* === AYARLAR === */
+const PHOTO = "nisa.jpeg"; // gerekirse nisa.jpg yap
 document.getElementById("bgPhoto").style.backgroundImage = `url("${PHOTO}")`;
 document.getElementById("heroPhoto").style.backgroundImage = `url("${PHOTO}")`;
 
 const fx = document.getElementById("fx");
 const isMobile = matchMedia("(max-width: 520px)").matches;
 
-/* yıldız tozu */
-const dustCount = isMobile ? 40 : 80;
+/* yıldız tozu (mobilde azalt) */
+const dustCount = isMobile ? 26 : 70;
 for(let i=0;i<dustCount;i++){
   const p=document.createElement("div");
   p.className="particle";
   p.style.left = Math.random()*100+"vw";
   p.style.top = (Math.random()*120-10)+"vh";
-  p.style.animationDuration = (4+Math.random()*6)+"s";
-  p.style.setProperty("--dx", (Math.random()*120-60)+"px");
-  p.style.opacity = (0.2 + Math.random()*0.7);
-  p.style.transform = `scale(${0.6+Math.random()*1.2})`;
+  p.style.animationDuration = (5+Math.random()*7)+"s";
+  p.style.setProperty("--dx", (Math.random()*90-45)+"px");
+  p.style.opacity = (0.18 + Math.random()*0.55);
+  p.style.transform = `scale(${0.6+Math.random()*1.1})`;
   fx.appendChild(p);
 }
 
-/* sürekli uçan kalpler */
-setInterval(()=>spawnHeart("🤍", 1), isMobile ? 420 : 260);
+/* sürekli uçan kalpler (mobilde daha seyrek + limitli) */
+let activeHearts = 0;
+const MAX_HEARTS = isMobile ? 16 : 38;
 
 function spawnHeart(symbol="🤍", amount=1){
   for(let i=0;i<amount;i++){
+    if(activeHearts >= MAX_HEARTS) return;
+    activeHearts++;
+
     const h=document.createElement("div");
     h.className="heartFloat";
     h.textContent = symbol;
     h.style.left = Math.random()*100+"vw";
-    h.style.fontSize = (18+Math.random()*18)+"px";
-    h.style.animationDuration = (4+Math.random()*4)+"s";
+    h.style.fontSize = (16+Math.random()*16)+"px";
+    h.style.animationDuration = (4.5+Math.random()*4)+"s";
     h.style.setProperty("--rot", (Math.random()*120-60)+"deg");
     fx.appendChild(h);
-    setTimeout(()=>h.remove(), 9000);
+
+    setTimeout(()=>{
+      h.remove();
+      activeHearts--;
+    }, 9000);
   }
 }
+setInterval(()=>spawnHeart("🤍", 1), isMobile ? 650 : 320);
 
+/* konfeti (mobilde azalt) */
 function confettiBurst(count=90){
-  for(let i=0;i<count;i++){
+  const n = isMobile ? Math.min(count, 70) : count;
+  for(let i=0;i<n;i++){
     const c=document.createElement("div");
     c.className="confetti";
     c.style.left = (Math.random()*100)+"vw";
@@ -500,15 +492,21 @@ function typeText(el, text, speed=28){
     if(i>=text.length) clearInterval(t);
   }, speed);
 }
-
-/* intro */
 typeText(document.getElementById("intro"), "Seninle geçen her gün… iyi ki.", 34);
 
+/* Kalp gönder: cooldown + limit (delirme fix) */
+let heartCooldown = false;
 function softSurprise(){
-  spawnHeart("💖", isMobile ? 10 : 14);
-  spawnHeart("✨", isMobile ? 4 : 7);
+  if(heartCooldown) return;
+  heartCooldown = true;
+
+  spawnHeart("💖", isMobile ? 6 : 12);
+  spawnHeart("✨", isMobile ? 3 : 6);
+
+  setTimeout(()=>{ heartCooldown = false; }, isMobile ? 900 : 450);
 }
 
+/* Sürpriz */
 let opened = false;
 function bigSurprise(){
   const box=document.getElementById("secret");
@@ -518,9 +516,9 @@ function bigSurprise(){
   if(!opened){
     opened = true;
     typeText(typeEl, "Seni çok seviyorum Nisa 🤍  Nice mutlu yıllara…", 26);
-    confettiBurst(isMobile ? 80 : 130);
-    spawnHeart("💖", isMobile ? 22 : 38);
-    spawnHeart("✨", isMobile ? 10 : 18);
+    confettiBurst(130);
+    spawnHeart("💖", isMobile ? 14 : 26);
+    spawnHeart("✨", isMobile ? 8 : 16);
 
     const card=document.querySelector(".card");
     card.animate([
@@ -529,69 +527,33 @@ function bigSurprise(){
       {transform:"translateY(1px) rotate(0.3deg)"},
       {transform:"translateY(0) rotate(0deg)"}
     ], {duration:320, iterations:2});
-
-    // sürprize basınca müzik de başlasın (kullanıcı etkileşimi => garanti)
-    startMusicIfNeeded();
-  } else {
-    spawnHeart("💖", isMobile ? 10 : 16);
   }
 }
 
-/* ======= LOCAL MUSIC (GARANTİ) ======= */
+/* ======= MÜZİK: KONTROL YOK, AUTO LOGIC =======
+   Mobilde sesli autoplay yok => sayfa açılınca muted autoplay,
+   ilk dokunuşta otomatik unmute.
+*/
 const bgm = document.getElementById("bgm");
-bgm.volume = 0.6;
-let musicStarted = false;
+bgm.volume = 0.75;
 
-async function startMusicIfNeeded(){
-  if(musicStarted) return;
+async function tryPlayMuted(){
   try{
-    await bgm.play(); // kullanıcı tıklaması içinde çağrılınca çalışır
-    musicStarted = true;
-    document.getElementById("musicBtn").textContent = "⏸ Duraklat";
-  }catch(e){
-    // çoğu zaman dosya yolu / isim hatasıdır
-    alert("Müzik başlamadı. 'sarki.mp3' HTML ile aynı klasörde mi?");
-  }
+    bgm.muted = true;
+    await bgm.play();
+  }catch(_){}
 }
+tryPlayMuted();
 
-async function toggleMusic(){
-  // ilk başlatma
-  if(!musicStarted){
-    await startMusicIfNeeded();
-    return;
-  }
-
-  if(bgm.paused){
-    try{
-      await bgm.play();
-      document.getElementById("musicBtn").textContent = "⏸ Duraklat";
-    }catch(e){
-      alert("Müzik devam etmedi. Dosya adı/konumu kontrol et.");
-    }
-  }else{
-    bgm.pause();
-    document.getElementById("musicBtn").textContent = "▶️ Devam";
-  }
+function enableSound(){
+  bgm.muted = false;
+  // unmute sonrası play garanti:
+  bgm.play().catch(()=>{});
+  window.removeEventListener("pointerdown", enableSound);
+  window.removeEventListener("touchstart", enableSound);
 }
-
-/* Ses kademesi: düşük/orta/yüksek */
-const volBtn = document.getElementById("volBtn");
-const vols = [
-  {label:"🔈 Ses: Düşük", v:0.3},
-  {label:"🔊 Ses: Orta", v:0.6},
-  {label:"🔊 Ses: Yüksek", v:0.9}
-];
-let volIndex = 1;
-function toggleVolume(){
-  volIndex = (volIndex + 1) % vols.length;
-  bgm.volume = vols[volIndex].v;
-  volBtn.textContent = vols[volIndex].label;
-}
-
-/* ekstra garanti: sayfanın herhangi bir yerine ilk tıklamada müziği başlat */
-window.addEventListener("pointerdown", () => {
-  if(!musicStarted) startMusicIfNeeded();
-}, {once:true});
+window.addEventListener("pointerdown", enableSound, {passive:true});
+window.addEventListener("touchstart", enableSound, {passive:true});
 </script>
 
 </body>
