@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>İyi ki Doğdun Nisa 🤍</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,8 +35,7 @@ body{
   filter: blur(10px) brightness(.58) saturate(1.35);
   transform: scale(1.08);
 }
-
-/* ekstra canlı katman (bozmadan ek) */
+/* canlı katman */
 .bg .live{
   position:absolute; inset:-45%;
   background:
@@ -64,6 +63,7 @@ body{
   0%{transform:translate(-2%, -1%) rotate(0deg) scale(1.05);}
   100%{transform:translate(2%, 1%) rotate(10deg) scale(1.12);}
 }
+
 .bg::after{
   content:"";
   position:absolute; inset:0;
@@ -310,25 +310,31 @@ footer{
   to{transform:translateY(-15vh) translateX(var(--dx)) scale(1.35); opacity:0;}
 }
 
+/* === BUTONDAN FOTOĞRAFA SÜZÜLEN KALP ANİMASYONU === */
 .heartFloat{
-  position:absolute;
+  position:fixed;
+  left:0; top:0;
   font-size: 22px;
   opacity:.95;
   filter: drop-shadow(0 12px 20px rgba(0,0,0,.35));
-  animation: floatUp linear forwards;
+  pointer-events:none;
+  animation: floatToPhoto var(--dur) ease-out forwards;
 }
-@keyframes floatUp{
-  from{transform:translateY(115vh) rotate(0deg) scale(.9); opacity:.0;}
-  10%{opacity:1;}
-  to{transform:translateY(-20vh) rotate(var(--rot)) scale(1.6); opacity:0;}
+@keyframes floatToPhoto{
+  0%{ transform:translate(0,0) scale(.9) rotate(0deg); opacity:0; }
+  12%{ opacity:1; }
+  70%{ transform:translate(var(--tx), var(--ty)) scale(1.2) rotate(var(--rot)); opacity:1; }
+  100%{ transform:translate(var(--tx2), var(--ty2)) scale(1.6) rotate(calc(var(--rot) * 1.4)); opacity:0; }
 }
 
 .confetti{
-  position:absolute;
+  position:fixed;
+  top:-10vh;
   width: 8px; height: 14px;
   opacity:.95;
   border-radius: 3px;
   animation: confettiFall linear forwards;
+  pointer-events:none;
 }
 @keyframes confettiFall{
   from{transform:translateY(-10vh) rotate(0deg); opacity:0;}
@@ -344,8 +350,6 @@ footer{
   .card{
     padding: 26px 16px 20px;
     border-radius: 26px;
-
-    /* EKRANA SIĞSIN */
     max-height: 92vh;
     overflow:auto;
     -webkit-overflow-scrolling: touch;
@@ -381,7 +385,7 @@ footer{
     <h1>İyi ki Doğdun Nisa</h1>
     <h2>Bugün senin günün… ve bu sayfa da senin için 🤍</h2>
 
-    <div class="hero">
+    <div class="hero" id="heroBox">
       <div class="frame">
         <div class="img" id="heroPhoto"></div>
       </div>
@@ -401,7 +405,7 @@ footer{
 
     <div class="actions">
       <button onclick="bigSurprise()">Sürprizi aç 🎁</button>
-      <button class="small" onclick="softSurprise()">Kalp gönder 💖</button>
+      <button class="small" onclick="softSurprise(event)">Kalp gönder 💖</button>
     </div>
 
     <div class="secret" id="secret">
@@ -412,14 +416,14 @@ footer{
   </div>
 </div>
 
-<!-- ✅ LOCAL MUSIC (KONTROL YOK) -->
+<!-- ✅ LOCAL MUSIC (kontrol yok) -->
 <audio id="bgm" preload="auto" autoplay muted loop>
-  <source src="gitme-turnam-128-ytshorts.savetube.me.mp3" type="audio/mpeg">
+  <source src="From The Start.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 /* === AYARLAR === */
-const PHOTO = "nisa.jpeg"; // gerekirse nisa.jpg yap
+const PHOTO = "nisa.jpeg"; // jpeg ise nisa.jpeg yap
 document.getElementById("bgPhoto").style.backgroundImage = `url("${PHOTO}")`;
 document.getElementById("heroPhoto").style.backgroundImage = `url("${PHOTO}")`;
 
@@ -440,33 +444,7 @@ for(let i=0;i<dustCount;i++){
   fx.appendChild(p);
 }
 
-/* sürekli uçan kalpler (mobilde daha seyrek + limitli) */
-let activeHearts = 0;
-const MAX_HEARTS = isMobile ? 16 : 38;
-
-function spawnHeart(symbol="🤍", amount=1){
-  for(let i=0;i<amount;i++){
-    if(activeHearts >= MAX_HEARTS) return;
-    activeHearts++;
-
-    const h=document.createElement("div");
-    h.className="heartFloat";
-    h.textContent = symbol;
-    h.style.left = Math.random()*100+"vw";
-    h.style.fontSize = (16+Math.random()*16)+"px";
-    h.style.animationDuration = (4.5+Math.random()*4)+"s";
-    h.style.setProperty("--rot", (Math.random()*120-60)+"deg");
-    fx.appendChild(h);
-
-    setTimeout(()=>{
-      h.remove();
-      activeHearts--;
-    }, 9000);
-  }
-}
-setInterval(()=>spawnHeart("🤍", 1), isMobile ? 650 : 320);
-
-/* konfeti (mobilde azalt) */
+/* konfeti */
 function confettiBurst(count=90){
   const n = isMobile ? Math.min(count, 70) : count;
   for(let i=0;i<n;i++){
@@ -477,7 +455,7 @@ function confettiBurst(count=90){
     c.style.animationDuration = (3+Math.random()*2.8)+"s";
     c.style.width = (6+Math.random()*6)+"px";
     c.style.height = (10+Math.random()*12)+"px";
-    fx.appendChild(c);
+    document.body.appendChild(c);
     setTimeout(()=>c.remove(), 7000);
   }
 }
@@ -494,14 +472,85 @@ function typeText(el, text, speed=28){
 }
 typeText(document.getElementById("intro"), "Seninle geçen her gün… iyi ki.", 34);
 
-/* Kalp gönder: cooldown + limit (delirme fix) */
+/* ======= BUTONDAN FOTOĞRAFA SÜZÜLEN KALPLER ======= */
+let activeHearts = 0;
+const MAX_HEARTS = isMobile ? 16 : 38;
+
+function heroCenter(){
+  const hero = document.getElementById("heroBox").getBoundingClientRect();
+  return {
+    x: hero.left + hero.width/2,
+    y: hero.top + hero.height/2
+  };
+}
+
+function spawnHeartToPhoto(fromX, fromY, symbol){
+  if(activeHearts >= MAX_HEARTS) return;
+  activeHearts++;
+
+  const target = heroCenter();
+
+  // hedefe doğru vektör + küçük sapma (doğal dursun)
+  const dx = (target.x - fromX) + (Math.random()*80 - 40);
+  const dy = (target.y - fromY) + (Math.random()*50 - 25);
+
+  const h = document.createElement("div");
+  h.className = "heartFloat";
+  h.textContent = symbol;
+
+  h.style.left = fromX + "px";
+  h.style.top  = fromY + "px";
+
+  const rot = (Math.random()*120 - 60) + "deg";
+  h.style.setProperty("--rot", rot);
+
+  // 1) foto merkeze doğru akış
+  h.style.setProperty("--tx", dx + "px");
+  h.style.setProperty("--ty", dy + "px");
+
+  // 2) foto etrafında hafif yukarı kayboluş
+  h.style.setProperty("--tx2", (dx + (Math.random()*60-30)) + "px");
+  h.style.setProperty("--ty2", (dy - (120 + Math.random()*80)) + "px");
+
+  // süre
+  const dur = (isMobile ? 3.6 : 3.2) + Math.random()*1.2;
+  h.style.setProperty("--dur", dur + "s");
+
+  h.style.fontSize = (16 + Math.random()*16) + "px";
+
+  document.body.appendChild(h);
+
+  setTimeout(()=>{
+    h.remove();
+    activeHearts--;
+  }, (dur*1000) + 200);
+}
+
+/* “Kalp gönder” cooldown */
 let heartCooldown = false;
-function softSurprise(){
+function softSurprise(e){
   if(heartCooldown) return;
   heartCooldown = true;
 
-  spawnHeart("💖", isMobile ? 6 : 12);
-  spawnHeart("✨", isMobile ? 3 : 6);
+  const rect = e.currentTarget.getBoundingClientRect();
+  const baseX = rect.left + rect.width/2;
+  const baseY = rect.top - 6;
+
+  const amount = isMobile ? 7 : 12;
+  for(let i=0;i<amount;i++){
+    spawnHeartToPhoto(
+      baseX + (Math.random()*40 - 20),
+      baseY + (Math.random()*10 - 6),
+      "💖"
+    );
+  }
+
+  // minik parıltı
+  if(!isMobile){
+    for(let i=0;i<4;i++){
+      spawnHeartToPhoto(baseX + (Math.random()*40-20), baseY, "✨");
+    }
+  }
 
   setTimeout(()=>{ heartCooldown = false; }, isMobile ? 900 : 450);
 }
@@ -517,8 +566,13 @@ function bigSurprise(){
     opened = true;
     typeText(typeEl, "Seni çok seviyorum Nisa 🤍  Nice mutlu yıllara…", 26);
     confettiBurst(130);
-    spawnHeart("💖", isMobile ? 14 : 26);
-    spawnHeart("✨", isMobile ? 8 : 16);
+
+    // ortadan fotoğa doğru kalp yağmuru
+    const cx = window.innerWidth/2;
+    const cy = window.innerHeight/2;
+    for(let i=0;i<(isMobile ? 10 : 18);i++){
+      spawnHeartToPhoto(cx + (Math.random()*140-70), cy + (Math.random()*40-20), "💖");
+    }
 
     const card=document.querySelector(".card");
     card.animate([
@@ -530,24 +584,19 @@ function bigSurprise(){
   }
 }
 
-/* ======= MÜZİK: KONTROL YOK, AUTO LOGIC =======
-   Mobilde sesli autoplay yok => sayfa açılınca muted autoplay,
-   ilk dokunuşta otomatik unmute.
-*/
+/* ======= MÜZİK: kontrol yok, auto + unmute ======= */
 const bgm = document.getElementById("bgm");
 bgm.volume = 0.75;
 
-async function tryPlayMuted(){
+(async () => {
   try{
     bgm.muted = true;
     await bgm.play();
   }catch(_){}
-}
-tryPlayMuted();
+})();
 
 function enableSound(){
   bgm.muted = false;
-  // unmute sonrası play garanti:
   bgm.play().catch(()=>{});
   window.removeEventListener("pointerdown", enableSound);
   window.removeEventListener("touchstart", enableSound);
