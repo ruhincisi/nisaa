@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>İyi ki Doğdun Nisa 🤍</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --glass: rgba(255,255,255,.14);
+  --stroke: rgba(255,255,255,.22);
+  --shadow: rgba(0,0,0,.55);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+html,body{height:100%;}
+body{
+  overflow:hidden;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#05050a;
+}
+
+/* ======= FULL SCREEN BACKGROUND ======= */
+.bg{position:fixed; inset:0; z-index:0; overflow:hidden;}
+.bg .photo{
+  position:absolute; inset:-2%;
+  background:center/cover no-repeat;
+  filter: blur(10px) brightness(.55) saturate(1.25);
+  transform: scale(1.08);
+}
+.bg .grad{
+  position:absolute; inset:-50%;
+  background: radial-gradient(circle at 20% 20%, rgba(255,110,180,.55), transparent 45%),
+              radial-gradient(circle at 80% 70%, rgba(120,170,255,.55), transparent 50%),
+              radial-gradient(circle at 40% 90%, rgba(255,220,120,.28), transparent 55%);
+  animation: drift 10s ease-in-out infinite alternate;
+  filter: blur(10px);
+}
+@keyframes drift{
+  0%{transform:translate(-2%, -1%) rotate(0deg) scale(1.05);}
+  100%{transform:translate(2%, 1%) rotate(10deg) scale(1.12);}
+}
+.bg::after{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(0,0,0,.10), rgba(0,0,0,.78) 72%),
+    linear-gradient(to bottom, rgba(0,0,0,.30), rgba(0,0,0,.68));
+}
+
+/* rings */
+.ring{
+  position:absolute;
+  width:520px; height:520px;
+  border-radius:50%;
+  border: 2px solid rgba(255,255,255,.10);
+  box-shadow: 0 0 80px rgba(255,255,255,.08);
+  opacity:.9;
+  animation: ring 9s ease-in-out infinite alternate;
+}
+.ring.r1{left:-190px; top:18%;}
+.ring.r2{right:-220px; bottom:10%; width:620px; height:620px; animation-duration:12s;}
+@keyframes ring{
+  0%{transform:translateY(0) scale(1); opacity:.75;}
+  100%{transform:translateY(-18px) scale(1.06); opacity:1;}
+}
+
+/* ======= CARD ======= */
+.wrap{
+  position:relative;
+  z-index:2;
+  width:min(980px, 94vw);
+  padding: 18px 0;
+  display:flex;
+  justify-content:center;
+}
+
+.card{
+  width:min(760px, 94vw);
+  border-radius: 34px;
+  background: var(--glass);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 35px 100px var(--shadow);
+  padding: 44px 42px 32px;
+  position:relative;
+  overflow:hidden;
+  animation: pop .9s ease forwards;
+}
+@keyframes pop{
+  from{opacity:0; transform: translateY(26px) scale(.93);}
+  to{opacity:1; transform: translateY(0) scale(1);}
+}
+
+/* border shine */
+.card::before{
+  content:"";
+  position:absolute; inset:-2px;
+  background: conic-gradient(from 180deg,
+    rgba(255,255,255,.0),
+    rgba(255,255,255,.22),
+    rgba(255,255,255,.0),
+    rgba(255,120,200,.22),
+    rgba(255,255,255,.0),
+    rgba(120,170,255,.20),
+    rgba(255,255,255,.0)
+  );
+  filter: blur(12px);
+  opacity:.65;
+  animation: spin 7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.card > *{position:relative; z-index:2;}
+.card::after{
+  content:"";
+  position:absolute; inset:0;
+  background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.10), transparent 40%),
+              radial-gradient(circle at 80% 30%, rgba(255,255,255,.07), transparent 45%),
+              radial-gradient(circle at 50% 100%, rgba(255,255,255,.06), transparent 55%);
+  z-index:1;
+}
+
+/* header */
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-bottom: 10px;
+}
+.pulse{
+  font-size: 2.3rem;
+  animation: beat 1.15s infinite;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
+}
+@keyframes beat{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.32)}
+}
+.badge{
+  display:inline-flex;
+  gap:10px;
+  align-items:center;
+  padding:10px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.16);
+  font-weight:600;
+  letter-spacing:.2px;
+  font-size:.95rem;
+  opacity:.95;
+}
+
+h1{
+  font-size: clamp(2.1rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  margin: 10px 0 6px;
+  line-height: 1.05;
+  background: linear-gradient(90deg,#fff,#ffe0f1,#fff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-align:center;
+}
+h2{
+  font-weight:300;
+  opacity:.92;
+  margin-bottom: 18px;
+  text-align:center;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+/* hero photo – TAM SIĞSIN (kırpma yok) */
+.hero{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin: 12px 0 20px;
+}
+.frame{
+  width:min(540px, 100%);
+  aspect-ratio: 16 / 9;
+  border-radius: 22px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.22);
+  background: rgba(0,0,0,.22);
+  box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  position:relative;
+}
+.frame .img{
+  position:absolute; inset:0;
+  background:center/contain no-repeat; /* <- kırpmadan sığdırır */
+}
+.frame::after{
+  content:"";
+  position:absolute; inset:0;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.16), transparent 45%),
+              linear-gradient(to bottom, rgba(0,0,0,.05), rgba(0,0,0,.35));
+}
+
+p{
+  font-size: clamp(1.02rem, 2.6vw, 1.12rem);
+  line-height: 1.85;
+  opacity:.96;
+  margin-bottom: 14px;
+  text-align:center;
+}
+
+/* typing line */
+.line{
+  margin: 16px auto 6px;
+  width:min(620px, 100%);
+  text-align:center;
+  font-weight:700;
+  font-size: clamp(1.05rem, 3vw, 1.22rem);
+  opacity:.98;
+}
+.typing{
+  border-right: 2px solid rgba(255,255,255,.9);
+  padding-right:6px;
+  animation: caret .7s steps(1) infinite;
+}
+@keyframes caret{50%{border-right-color: transparent;}}
+
+/* buttons */
+.actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top: 14px;
+}
+button{
+  border:none;
+  cursor:pointer;
+  padding: 15px 40px;
+  border-radius: 999px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color:#fff;
+  background: linear-gradient(135deg,#ff4fa0,#ff93cf);
+  transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+  box-shadow: 0 18px 45px rgba(0,0,0,.45);
+}
+button:hover{transform: translateY(-2px) scale(1.05); filter: brightness(1.05);}
+button:active{transform: translateY(1px) scale(1.02);}
+
+.small{
+  padding: 15px 20px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow:none;
+}
+
+.secret{
+  margin-top: 16px;
+  display:none;
+  text-align:center;
+  font-size: clamp(1.05rem, 3.1vw, 1.25rem);
+  font-weight: 700;
+  line-height:1.6;
+  opacity:.98;
+}
+
+footer{
+  margin-top: 16px;
+  font-size: .92rem;
+  opacity:.85;
+  text-align:center;
+}
+
+/* ======= FX LAYERS ======= */
+.fx{position:fixed; inset:0; z-index:1; pointer-events:none;}
+
+.particle{
+  position:absolute;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  opacity:.9;
+  background: rgba(255,255,255,.9);
+  filter: drop-shadow(0 0 6px rgba(255,255,255,.35));
+  animation: twinkle linear infinite;
+}
+@keyframes twinkle{
+  from{transform:translateY(110vh) translateX(0) scale(.7); opacity:0;}
+  15%{opacity:.8;}
+  to{transform:translateY(-15vh) translateX(var(--dx)) scale(1.35); opacity:0;}
+}
+
+.heartFloat{
+  position:absolute;
+  font-size: 22px;
+  opacity:.95;
+  filter: drop-shadow(0 12px 20px rgba(0,0,0,.35));
+  animation: floatUp linear forwards;
+}
+@keyframes floatUp{
+  from{transform:translateY(115vh) rotate(0deg) scale(.9); opacity:.0;}
+  10%{opacity:1;}
+  to{transform:translateY(-20vh) rotate(var(--rot)) scale(1.6); opacity:0;}
+}
+
+.confetti{
+  position:absolute;
+  width: 8px; height: 14px;
+  opacity:.95;
+  border-radius: 3px;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall{
+  from{transform:translateY(-10vh) rotate(0deg); opacity:0;}
+  10%{opacity:1;}
+  to{transform:translateY(115vh) rotate(720deg); opacity:0;}
+}
+
+/* ======= MUSIC CONTROL (Floating) ======= */
+.musicCtrl{
+  position:fixed;
+  z-index:3;
+  right:14px;
+  bottom:14px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:10px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.20);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 50px rgba(0,0,0,.45);
+  user-select:none;
+}
+.musicCtrl .dot{
+  width:9px;height:9px;border-radius:50%;
+  background: rgba(255,255,255,.85);
+  box-shadow: 0 0 14px rgba(255,255,255,.45);
+  animation: dot 1s ease-in-out infinite alternate;
+}
+@keyframes dot{
+  from{opacity:.35; transform:scale(.9);}
+  to{opacity:1; transform:scale(1.15);}
+}
+.musicCtrl button{
+  padding:10px 14px;
+  border-radius:999px;
+  font-size:.95rem;
+  box-shadow:none;
+}
+
+/* ======= MOBILE TUNING ======= */
+@media (max-width:520px){
+  .ring{display:none;}
+  .bg .photo{filter: blur(8px) brightness(.58) saturate(1.2);}
+  .card{padding: 34px 18px 26px; border-radius: 28px;}
+  .badge{font-size:.88rem; padding:9px 13px;}
+  .actions{gap:10px;}
+  button{width:100%;}
+  .small{width:100%;}
+  .musicCtrl{right:10px; bottom:10px;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg">
+  <div class="photo" id="bgPhoto"></div>
+  <div class="grad"></div>
+  <div class="ring r1"></div>
+  <div class="ring r2"></div>
+</div>
+
+<div class="fx" id="fx"></div>
+
+<div class="wrap">
+  <div class="card">
+    <div class="top">
+      <div class="pulse">🤍</div>
+      <div class="badge">Nisa’ya özel ✨</div>
+    </div>
+
+    <h1>İyi ki Doğdun Nisa</h1>
+    <h2>Bugün senin günün… ve bu sayfa da senin için 🤍</h2>
+
+    <div class="hero">
+      <div class="frame">
+        <div class="img" id="heroPhoto"></div>
+      </div>
+    </div>
+
+    <p>
+      Hayatıma girdiğinden beri her şey daha güzel.
+      Gülüşün, enerjin, varlığın… hepsi “iyi ki”.
+    </p>
+
+    <p>
+      Yeni yaşın; mutluluk, sağlık ve birlikte biriktireceğimiz
+      unutulmaz anılarla dolsun.
+    </p>
+
+    <div class="line"><span id="intro" class="typing"></span></div>
+
+    <div class="actions">
+      <button onclick="bigSurprise()">Sürprizi aç 🎁</button>
+      <button class="small" onclick="softSurprise()">Kalp gönder 💖</button>
+    </div>
+
+    <div class="secret" id="secret">
+      <span id="type" class="typing"></span>
+    </div>
+
+    <footer>— Seni düşünen biri tarafından 💫</footer>
+  </div>
+</div>
+
+<!-- ✅ LOCAL MUSIC (indirdiğin dosya) -->
+<audio id="bgm" preload="auto" loop>
+  <!-- dosya adın farklıysa burada değiştir -->
+  <source src="From The Start.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Floating Music Control -->
+<div class="musicCtrl">
+  <div class="dot"></div>
+  <button id="musicBtn" onclick="toggleMusic()">▶️ Müziği Başlat</button>
+  <button class="small" id="volBtn" onclick="toggleVolume()">🔊 Ses: Orta</button>
+</div>
+
+<script>
+/* === AYARLAR ===
+   Foto adı sende nisa.jpeg görünüyor, jpg ise "nisa.jpg" yap.
+*/
+const PHOTO = "nisa.jpeg";     // <-- gerekirse nisa.jpg yap
+const MUSIC_FILE = "From The Start.mp3"; // <-- dosya adın farklıysa değiştir
+
+document.getElementById("bgPhoto").style.backgroundImage = `url("${PHOTO}")`;
+document.getElementById("heroPhoto").style.backgroundImage = `url("${PHOTO}")`;
+
+const fx = document.getElementById("fx");
+const isMobile = matchMedia("(max-width: 520px)").matches;
+
+/* yıldız tozu */
+const dustCount = isMobile ? 40 : 80;
+for(let i=0;i<dustCount;i++){
+  const p=document.createElement("div");
+  p.className="particle";
+  p.style.left = Math.random()*100+"vw";
+  p.style.top = (Math.random()*120-10)+"vh";
+  p.style.animationDuration = (4+Math.random()*6)+"s";
+  p.style.setProperty("--dx", (Math.random()*120-60)+"px");
+  p.style.opacity = (0.2 + Math.random()*0.7);
+  p.style.transform = `scale(${0.6+Math.random()*1.2})`;
+  fx.appendChild(p);
+}
+
+/* sürekli uçan kalpler */
+setInterval(()=>spawnHeart("🤍", 1), isMobile ? 420 : 260);
+
+function spawnHeart(symbol="🤍", amount=1){
+  for(let i=0;i<amount;i++){
+    const h=document.createElement("div");
+    h.className="heartFloat";
+    h.textContent = symbol;
+    h.style.left = Math.random()*100+"vw";
+    h.style.fontSize = (18+Math.random()*18)+"px";
+    h.style.animationDuration = (4+Math.random()*4)+"s";
+    h.style.setProperty("--rot", (Math.random()*120-60)+"deg");
+    fx.appendChild(h);
+    setTimeout(()=>h.remove(), 9000);
+  }
+}
+
+function confettiBurst(count=90){
+  for(let i=0;i<count;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left = (Math.random()*100)+"vw";
+    c.style.background = `hsla(${Math.random()*360}, 90%, 70%, .95)`;
+    c.style.animationDuration = (3+Math.random()*2.8)+"s";
+    c.style.width = (6+Math.random()*6)+"px";
+    c.style.height = (10+Math.random()*12)+"px";
+    fx.appendChild(c);
+    setTimeout(()=>c.remove(), 7000);
+  }
+}
+
+/* typing */
+function typeText(el, text, speed=28){
+  el.textContent="";
+  let i=0;
+  const t=setInterval(()=>{
+    el.textContent += text[i] ?? "";
+    i++;
+    if(i>=text.length) clearInterval(t);
+  }, speed);
+}
+
+/* intro */
+typeText(document.getElementById("intro"), "Seninle geçen her gün… iyi ki.", 34);
+
+function softSurprise(){
+  spawnHeart("💖", isMobile ? 10 : 14);
+  spawnHeart("✨", isMobile ? 4 : 7);
+}
+
+let opened = false;
+function bigSurprise(){
+  const box=document.getElementById("secret");
+  const typeEl=document.getElementById("type");
+  box.style.display="block";
+
+  if(!opened){
+    opened = true;
+    typeText(typeEl, "Seni çok seviyorum Nisa 🤍  Nice mutlu yıllara…", 26);
+    confettiBurst(isMobile ? 80 : 130);
+    spawnHeart("💖", isMobile ? 22 : 38);
+    spawnHeart("✨", isMobile ? 10 : 18);
+
+    const card=document.querySelector(".card");
+    card.animate([
+      {transform:"translateY(0) rotate(0deg)"},
+      {transform:"translateY(-2px) rotate(-0.3deg)"},
+      {transform:"translateY(1px) rotate(0.3deg)"},
+      {transform:"translateY(0) rotate(0deg)"}
+    ], {duration:320, iterations:2});
+
+    // sürprize basınca müzik de başlasın (kullanıcı etkileşimi => garanti)
+    startMusicIfNeeded();
+  } else {
+    spawnHeart("💖", isMobile ? 10 : 16);
+  }
+}
+
+/* ======= LOCAL MUSIC (GARANTİ) ======= */
+const bgm = document.getElementById("bgm");
+bgm.volume = 0.6;
+let musicStarted = false;
+
+async function startMusicIfNeeded(){
+  if(musicStarted) return;
+  try{
+    await bgm.play(); // kullanıcı tıklaması içinde çağrılınca çalışır
+    musicStarted = true;
+    document.getElementById("musicBtn").textContent = "⏸ Duraklat";
+  }catch(e){
+    // çoğu zaman dosya yolu / isim hatasıdır
+    alert("Müzik başlamadı. 'sarki.mp3' HTML ile aynı klasörde mi?");
+  }
+}
+
+async function toggleMusic(){
+  // ilk başlatma
+  if(!musicStarted){
+    await startMusicIfNeeded();
+    return;
+  }
+
+  if(bgm.paused){
+    try{
+      await bgm.play();
+      document.getElementById("musicBtn").textContent = "⏸ Duraklat";
+    }catch(e){
+      alert("Müzik devam etmedi. Dosya adı/konumu kontrol et.");
+    }
+  }else{
+    bgm.pause();
+    document.getElementById("musicBtn").textContent = "▶️ Devam";
+  }
+}
+
+/* Ses kademesi: düşük/orta/yüksek */
+const volBtn = document.getElementById("volBtn");
+const vols = [
+  {label:"🔈 Ses: Düşük", v:0.3},
+  {label:"🔊 Ses: Orta", v:0.6},
+  {label:"🔊 Ses: Yüksek", v:0.9}
+];
+let volIndex = 1;
+function toggleVolume(){
+  volIndex = (volIndex + 1) % vols.length;
+  bgm.volume = vols[volIndex].v;
+  volBtn.textContent = vols[volIndex].label;
+}
+
+/* ekstra garanti: sayfanın herhangi bir yerine ilk tıklamada müziği başlat */
+window.addEventListener("pointerdown", () => {
+  if(!musicStarted) startMusicIfNeeded();
+}, {once:true});
+</script>
+
+</body>
+</html>
