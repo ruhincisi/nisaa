@@ -24,52 +24,41 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#05050a;
+  background:#070812;
 }
 
-/* ======= FULL SCREEN BACKGROUND ======= */
+/* ======= FULL SCREEN BACKGROUND (DAHA HOŞ) ======= */
 .bg{position:fixed; inset:0; z-index:0; overflow:hidden;}
 .bg .photo{
   position:absolute; inset:-2%;
   background:center/cover no-repeat;
-  filter: blur(10px) brightness(.58) saturate(1.35);
+  filter: blur(11px) brightness(.55) saturate(1.35) contrast(1.06);
   transform: scale(1.08);
 }
-/* canlı katman */
+
+/* aurora glow */
 .bg .live{
-  position:absolute; inset:-45%;
+  position:absolute; inset:-55%;
   background:
-    radial-gradient(circle at 20% 30%, rgba(255,110,180,.55), transparent 45%),
-    radial-gradient(circle at 80% 70%, rgba(120,170,255,.55), transparent 50%),
-    radial-gradient(circle at 45% 90%, rgba(255,220,120,.35), transparent 55%);
-  filter: blur(18px);
-  opacity:.75;
-  animation: drift2 12s ease-in-out infinite alternate;
+    radial-gradient(circle at 20% 25%, rgba(255,120,200,.55), transparent 45%),
+    radial-gradient(circle at 85% 70%, rgba(120,170,255,.50), transparent 52%),
+    radial-gradient(circle at 45% 95%, rgba(255,210,140,.28), transparent 55%),
+    radial-gradient(circle at 65% 30%, rgba(190,120,255,.35), transparent 50%);
+  filter: blur(20px);
+  opacity:.80;
+  animation: drift2 14s ease-in-out infinite alternate;
 }
 @keyframes drift2{
-  0%{transform:translate(-2%,-1%) rotate(0deg) scale(1.05);}
-  100%{transform:translate(2%,1%) rotate(10deg) scale(1.18);}
-}
-
-.bg .grad{
-  position:absolute; inset:-50%;
-  background: radial-gradient(circle at 20% 20%, rgba(255,110,180,.55), transparent 45%),
-              radial-gradient(circle at 80% 70%, rgba(120,170,255,.55), transparent 50%),
-              radial-gradient(circle at 40% 90%, rgba(255,220,120,.28), transparent 55%);
-  animation: drift 10s ease-in-out infinite alternate;
-  filter: blur(10px);
-}
-@keyframes drift{
-  0%{transform:translate(-2%, -1%) rotate(0deg) scale(1.05);}
-  100%{transform:translate(2%, 1%) rotate(10deg) scale(1.12);}
+  0%{transform:translate(-2%,-1%) rotate(0deg) scale(1.06);}
+  100%{transform:translate(2%,1%) rotate(12deg) scale(1.20);}
 }
 
 .bg::after{
   content:"";
   position:absolute; inset:0;
   background:
-    radial-gradient(circle at 50% 40%, rgba(0,0,0,.10), rgba(0,0,0,.78) 72%),
-    linear-gradient(to bottom, rgba(0,0,0,.30), rgba(0,0,0,.68));
+    radial-gradient(circle at 50% 35%, rgba(0,0,0,.10), rgba(0,0,0,.82) 72%),
+    linear-gradient(to bottom, rgba(10,10,18,.22), rgba(0,0,0,.75));
 }
 
 /* rings */
@@ -78,14 +67,14 @@ body{
   width:520px; height:520px;
   border-radius:50%;
   border: 2px solid rgba(255,255,255,.10);
-  box-shadow: 0 0 80px rgba(255,255,255,.08);
+  box-shadow: 0 0 90px rgba(255,255,255,.08);
   opacity:.9;
   animation: ring 9s ease-in-out infinite alternate;
 }
 .ring.r1{left:-190px; top:18%;}
 .ring.r2{right:-220px; bottom:10%; width:620px; height:620px; animation-duration:12s;}
 @keyframes ring{
-  0%{transform:translateY(0) scale(1); opacity:.75;}
+  0%{transform:translateY(0) scale(1); opacity:.70;}
   100%{transform:translateY(-18px) scale(1.06); opacity:1;}
 }
 
@@ -193,7 +182,7 @@ h2{
   font-size: clamp(1rem, 2.5vw, 1.2rem);
 }
 
-/* hero photo – TAM SIĞSIN (kırpma yok) */
+/* hero photo */
 .hero{
   display:flex;
   align-items:center;
@@ -217,8 +206,43 @@ h2{
 .frame::after{
   content:"";
   position:absolute; inset:0;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.16), transparent 45%),
-              linear-gradient(to bottom, rgba(0,0,0,.05), rgba(0,0,0,.35));
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 45%),
+              linear-gradient(to bottom, rgba(0,0,0,.04), rgba(0,0,0,.35));
+}
+
+/* ✅ Foto çevresi kalp katmanı */
+.heroFx{
+  position:absolute;
+  inset:-18px; /* biraz dışarı taşsın ki “çevresinde” görünsün */
+  pointer-events:none;
+  z-index:5;
+}
+
+/* kalp elementi (foto etrafında dönecek) */
+.orbitHeart{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%,-50%);
+  font-size: 18px;
+  opacity:0;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
+  animation: orbit var(--dur) ease-in-out forwards;
+}
+@keyframes orbit{
+  0%{
+    opacity:0;
+    transform: translate(-50%,-50%) rotate(var(--a0)) translateX(var(--r)) scale(.9);
+  }
+  15%{opacity:1;}
+  75%{
+    opacity:1;
+    transform: translate(-50%,-50%) rotate(var(--a1)) translateX(var(--r)) scale(1.15);
+  }
+  100%{
+    opacity:0;
+    transform: translate(-50%,-50%) rotate(var(--a2)) translateX(calc(var(--r) + 20px)) scale(1.45);
+  }
 }
 
 p{
@@ -292,9 +316,8 @@ footer{
   text-align:center;
 }
 
-/* ======= FX LAYERS ======= */
+/* ======= FX (sadece yıldız tozu kaldı) ======= */
 .fx{position:fixed; inset:0; z-index:1; pointer-events:none;}
-
 .particle{
   position:absolute;
   width: 3px; height: 3px;
@@ -310,23 +333,7 @@ footer{
   to{transform:translateY(-15vh) translateX(var(--dx)) scale(1.35); opacity:0;}
 }
 
-/* === BUTONDAN FOTOĞRAFA SÜZÜLEN KALP ANİMASYONU === */
-.heartFloat{
-  position:fixed;
-  left:0; top:0;
-  font-size: 22px;
-  opacity:.95;
-  filter: drop-shadow(0 12px 20px rgba(0,0,0,.35));
-  pointer-events:none;
-  animation: floatToPhoto var(--dur) ease-out forwards;
-}
-@keyframes floatToPhoto{
-  0%{ transform:translate(0,0) scale(.9) rotate(0deg); opacity:0; }
-  12%{ opacity:1; }
-  70%{ transform:translate(var(--tx), var(--ty)) scale(1.2) rotate(var(--rot)); opacity:1; }
-  100%{ transform:translate(var(--tx2), var(--ty2)) scale(1.6) rotate(calc(var(--rot) * 1.4)); opacity:0; }
-}
-
+/* konfeti */
 .confetti{
   position:fixed;
   top:-10vh;
@@ -345,7 +352,7 @@ footer{
 /* ======= MOBILE TUNING ======= */
 @media (max-width:520px){
   .ring{display:none;}
-  .bg .photo{filter: blur(8px) brightness(.62) saturate(1.25);}
+  .bg .photo{filter: blur(9px) brightness(.6) saturate(1.25);}
   .wrap{padding:10px 0;}
   .card{
     padding: 26px 16px 20px;
@@ -359,6 +366,7 @@ footer{
   .actions{gap:10px;}
   button{width:100%;}
   .small{width:100%;}
+  .heroFx{inset:-14px;}
 }
 </style>
 </head>
@@ -368,7 +376,6 @@ footer{
 <div class="bg">
   <div class="photo" id="bgPhoto"></div>
   <div class="live"></div>
-  <div class="grad"></div>
   <div class="ring r1"></div>
   <div class="ring r2"></div>
 </div>
@@ -386,8 +393,9 @@ footer{
     <h2>Bugün senin günün… ve bu sayfa da senin için 🤍</h2>
 
     <div class="hero" id="heroBox">
-      <div class="frame">
+      <div class="frame" id="frame">
         <div class="img" id="heroPhoto"></div>
+        <div class="heroFx" id="heroFx"></div>
       </div>
     </div>
 
@@ -405,7 +413,7 @@ footer{
 
     <div class="actions">
       <button onclick="bigSurprise()">Sürprizi aç 🎁</button>
-      <button class="small" onclick="softSurprise(event)">Kalp gönder 💖</button>
+      <button class="small" onclick="softSurprise()">Kalp gönder 💖</button>
     </div>
 
     <div class="secret" id="secret">
@@ -428,20 +436,89 @@ document.getElementById("bgPhoto").style.backgroundImage = `url("${PHOTO}")`;
 document.getElementById("heroPhoto").style.backgroundImage = `url("${PHOTO}")`;
 
 const fx = document.getElementById("fx");
+const heroFx = document.getElementById("heroFx");
 const isMobile = matchMedia("(max-width: 520px)").matches;
 
-/* yıldız tozu (mobilde azalt) */
-const dustCount = isMobile ? 26 : 70;
+/* yıldız tozu (hafif) */
+const dustCount = isMobile ? 22 : 55;
 for(let i=0;i<dustCount;i++){
   const p=document.createElement("div");
   p.className="particle";
   p.style.left = Math.random()*100+"vw";
   p.style.top = (Math.random()*120-10)+"vh";
-  p.style.animationDuration = (5+Math.random()*7)+"s";
-  p.style.setProperty("--dx", (Math.random()*90-45)+"px");
-  p.style.opacity = (0.18 + Math.random()*0.55);
+  p.style.animationDuration = (6+Math.random()*8)+"s";
+  p.style.setProperty("--dx", (Math.random()*80-40)+"px");
+  p.style.opacity = (0.16 + Math.random()*0.45);
   p.style.transform = `scale(${0.6+Math.random()*1.1})`;
   fx.appendChild(p);
+}
+
+/* typing */
+function typeText(el, text, speed=28){
+  el.textContent="";
+  let i=0;
+  const t=setInterval(()=>{
+    el.textContent += text[i] ?? "";
+    i++;
+    if(i>=text.length) clearInterval(t);
+  }, speed);
+}
+typeText(document.getElementById("intro"), "Seninle geçen her gün… iyi ki.", 34);
+
+/* ✅ Foto etrafında kalp uçuşu */
+let heartCooldown = false;
+let activeOrbit = 0;
+const MAX_ORBIT = isMobile ? 18 : 32;
+
+function spawnOrbitHeart(symbol="💖"){
+  if(activeOrbit >= MAX_ORBIT) return;
+  activeOrbit++;
+
+  const h = document.createElement("div");
+  h.className = "orbitHeart";
+  h.textContent = symbol;
+
+  // yarıçap (foto çevresi)
+  const r = (isMobile ? 85 : 120) + Math.random() * (isMobile ? 35 : 55);
+  h.style.setProperty("--r", r + "px");
+
+  // açı (dönüş)
+  const a0 = Math.floor(Math.random()*360) + "deg";
+  const a1 = (Math.floor(Math.random()*360) + 360) + "deg";
+  const a2 = (Math.floor(Math.random()*360) + 720) + "deg";
+  h.style.setProperty("--a0", a0);
+  h.style.setProperty("--a1", a1);
+  h.style.setProperty("--a2", a2);
+
+  // süre
+  const dur = (isMobile ? 2.8 : 2.5) + Math.random()*1.2;
+  h.style.setProperty("--dur", dur + "s");
+
+  // boyut
+  h.style.fontSize = (isMobile ? (16+Math.random()*14) : (18+Math.random()*16)) + "px";
+
+  heroFx.appendChild(h);
+
+  setTimeout(()=>{
+    h.remove();
+    activeOrbit--;
+  }, (dur*1000)+150);
+}
+
+function softSurprise(){
+  if(heartCooldown) return;
+  heartCooldown = true;
+
+  const amount = isMobile ? 10 : 16;
+  for(let i=0;i<amount;i++){
+    setTimeout(()=>spawnOrbitHeart("💖"), i*40);
+  }
+  // birkaç tane beyaz kalp de karışsın
+  for(let i=0;i<(isMobile ? 3 : 5);i++){
+    setTimeout(()=>spawnOrbitHeart("🤍"), i*90);
+  }
+
+  setTimeout(()=>{ heartCooldown=false; }, isMobile ? 850 : 420);
 }
 
 /* konfeti */
@@ -460,101 +537,6 @@ function confettiBurst(count=90){
   }
 }
 
-/* typing */
-function typeText(el, text, speed=28){
-  el.textContent="";
-  let i=0;
-  const t=setInterval(()=>{
-    el.textContent += text[i] ?? "";
-    i++;
-    if(i>=text.length) clearInterval(t);
-  }, speed);
-}
-typeText(document.getElementById("intro"), "Seninle geçen her gün… iyi ki.", 34);
-
-/* ======= BUTONDAN FOTOĞRAFA SÜZÜLEN KALPLER ======= */
-let activeHearts = 0;
-const MAX_HEARTS = isMobile ? 16 : 38;
-
-function heroCenter(){
-  const hero = document.getElementById("heroBox").getBoundingClientRect();
-  return {
-    x: hero.left + hero.width/2,
-    y: hero.top + hero.height/2
-  };
-}
-
-function spawnHeartToPhoto(fromX, fromY, symbol){
-  if(activeHearts >= MAX_HEARTS) return;
-  activeHearts++;
-
-  const target = heroCenter();
-
-  // hedefe doğru vektör + küçük sapma (doğal dursun)
-  const dx = (target.x - fromX) + (Math.random()*80 - 40);
-  const dy = (target.y - fromY) + (Math.random()*50 - 25);
-
-  const h = document.createElement("div");
-  h.className = "heartFloat";
-  h.textContent = symbol;
-
-  h.style.left = fromX + "px";
-  h.style.top  = fromY + "px";
-
-  const rot = (Math.random()*120 - 60) + "deg";
-  h.style.setProperty("--rot", rot);
-
-  // 1) foto merkeze doğru akış
-  h.style.setProperty("--tx", dx + "px");
-  h.style.setProperty("--ty", dy + "px");
-
-  // 2) foto etrafında hafif yukarı kayboluş
-  h.style.setProperty("--tx2", (dx + (Math.random()*60-30)) + "px");
-  h.style.setProperty("--ty2", (dy - (120 + Math.random()*80)) + "px");
-
-  // süre
-  const dur = (isMobile ? 3.6 : 3.2) + Math.random()*1.2;
-  h.style.setProperty("--dur", dur + "s");
-
-  h.style.fontSize = (16 + Math.random()*16) + "px";
-
-  document.body.appendChild(h);
-
-  setTimeout(()=>{
-    h.remove();
-    activeHearts--;
-  }, (dur*1000) + 200);
-}
-
-/* “Kalp gönder” cooldown */
-let heartCooldown = false;
-function softSurprise(e){
-  if(heartCooldown) return;
-  heartCooldown = true;
-
-  const rect = e.currentTarget.getBoundingClientRect();
-  const baseX = rect.left + rect.width/2;
-  const baseY = rect.top - 6;
-
-  const amount = isMobile ? 7 : 12;
-  for(let i=0;i<amount;i++){
-    spawnHeartToPhoto(
-      baseX + (Math.random()*40 - 20),
-      baseY + (Math.random()*10 - 6),
-      "💖"
-    );
-  }
-
-  // minik parıltı
-  if(!isMobile){
-    for(let i=0;i<4;i++){
-      spawnHeartToPhoto(baseX + (Math.random()*40-20), baseY, "✨");
-    }
-  }
-
-  setTimeout(()=>{ heartCooldown = false; }, isMobile ? 900 : 450);
-}
-
 /* Sürpriz */
 let opened = false;
 function bigSurprise(){
@@ -567,11 +549,12 @@ function bigSurprise(){
     typeText(typeEl, "Seni çok seviyorum Nisa 🤍  Nice mutlu yıllara…", 26);
     confettiBurst(130);
 
-    // ortadan fotoğa doğru kalp yağmuru
-    const cx = window.innerWidth/2;
-    const cy = window.innerHeight/2;
-    for(let i=0;i<(isMobile ? 10 : 18);i++){
-      spawnHeartToPhoto(cx + (Math.random()*140-70), cy + (Math.random()*40-20), "💖");
+    // sürprizde foto etrafı kalp patlaması
+    for(let i=0;i<(isMobile ? 16 : 26);i++){
+      setTimeout(()=>spawnOrbitHeart("💖"), i*35);
+    }
+    for(let i=0;i<(isMobile ? 5 : 8);i++){
+      setTimeout(()=>spawnOrbitHeart("✨"), i*60);
     }
 
     const card=document.querySelector(".card");
